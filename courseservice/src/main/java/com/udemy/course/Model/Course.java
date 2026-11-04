@@ -20,7 +20,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @NotBlank
-    private String tutorId;
+    private String userId;
     private String title;
     private String description;
     private BigDecimal price;

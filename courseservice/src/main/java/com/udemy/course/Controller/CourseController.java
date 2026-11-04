@@ -6,6 +6,8 @@ import com.udemy.course.Service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -22,8 +24,12 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourse(courseId));
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<CourseResponse>> getUserCourses(@RequestHeader("X-User-ID") String userId){
+        return ResponseEntity.ok(courseService.getUserCourses(userId));
+    }
     @PostMapping
-    public ResponseEntity<CourseResponse> createCourse(@RequestBody CourseRequest request){
-        return ResponseEntity.ok(courseService.createCourse(request));
+    public ResponseEntity<CourseResponse> createCourse(@RequestHeader("X-User-ID") String userId,@RequestBody CourseRequest request){
+        return ResponseEntity.ok(courseService.createCourse(userId,request));
     }
 }

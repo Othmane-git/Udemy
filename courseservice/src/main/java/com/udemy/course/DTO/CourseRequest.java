@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class CourseRequest {
     @NotBlank
-    private String tutorId;
+    private String userId;
     @NotBlank
     private String title;
     @NotBlank

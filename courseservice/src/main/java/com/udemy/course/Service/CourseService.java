@@ -6,6 +6,8 @@ import com.udemy.course.Model.Course;
 import com.udemy.course.Repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseService {
 
@@ -28,17 +30,17 @@ public class CourseService {
         courseResponse.setPrice(course.getPrice());
         courseResponse.setDescription(course.getDescription());
         courseResponse.setStatus(course.getStatus());
-        courseResponse.setTutorId(course.getTutorId());
+        courseResponse.setUserId(course.getUserId());
 
         return courseResponse;
     }
 
-    public CourseResponse createCourse(CourseRequest request){
+    public CourseResponse createCourse(String userId,CourseRequest request){
         Course course = new Course();
         course.setPrice(request.getPrice());
         course.setTitle(request.getTitle());
         course.setDescription(request.getDescription());
-        course.setTutorId(request.getTutorId());
+        course.setUserId(userId);
 
         Course savedCourse = courseRepository.save(course);
 
@@ -50,8 +52,14 @@ public class CourseService {
         courseResponse.setPrice(savedCourse.getPrice());
         courseResponse.setDescription(savedCourse.getDescription());
         courseResponse.setStatus(savedCourse.getStatus());
-        courseResponse.setTutorId(savedCourse.getTutorId());
+        courseResponse.setUserId(userId);
 
         return courseResponse;
+    }
+
+    public List<CourseResponse> getUserCourses(String userId) {
+        List<Course> courses = courseRepository.findAllByUserId(userId);
+
+        return courses;
     }
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class CourseResponse {
     private String id;
-    private String tutorId;
+    private String userId;
     private String title;
     private String description;
     private BigDecimal price;
