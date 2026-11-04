@@ -8,21 +8,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/courses")
-public class Course {
+public class CourseController {
 
     private final CourseService courseService;
 
-    public Course(CourseService courseService) {
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
     @GetMapping("/{courseId}")
     public ResponseEntity<CourseResponse> getCourse(@PathVariable String courseId){
-
+        System.out.println(courseId);
+        return ResponseEntity.ok(courseService.getCourse(courseId));
     }
 
     @PostMapping
     public ResponseEntity<CourseResponse> createCourse(@RequestBody CourseRequest request){
-
+        return ResponseEntity.ok(courseService.createCourse(request));
     }
 }
