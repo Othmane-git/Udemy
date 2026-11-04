@@ -59,7 +59,23 @@ public class CourseService {
 
     public List<CourseResponse> getUserCourses(String userId) {
         List<Course> courses = courseRepository.findAllByUserId(userId);
+        List<CourseResponse> courseResponses = new java.util.ArrayList<>(List.of());
 
-        return courses;
+        for (Course course : courses){
+            CourseResponse courseResponse = new CourseResponse();
+
+            courseResponse.setId(course.getId());
+            courseResponse.setCreatedAt(course.getCreatedAt());
+            courseResponse.setUpdatedAt(course.getUpdatedAt());
+            courseResponse.setTitle(course.getTitle());
+            courseResponse.setPrice(course.getPrice());
+            courseResponse.setDescription(course.getDescription());
+            courseResponse.setStatus(course.getStatus());
+            courseResponse.setUserId(userId);
+
+            courseResponses.add(courseResponse);
+        }
+
+        return courseResponses;
     }
 }

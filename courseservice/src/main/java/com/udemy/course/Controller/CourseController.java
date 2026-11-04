@@ -18,16 +18,16 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/{courseId}")
-    public ResponseEntity<CourseResponse> getCourse(@PathVariable String courseId){
-        System.out.println(courseId);
-        return ResponseEntity.ok(courseService.getCourse(courseId));
-    }
-
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<CourseResponse>> getUserCourses(@RequestHeader("X-User-ID") String userId){
         return ResponseEntity.ok(courseService.getUserCourses(userId));
     }
+
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> getCourse(@PathVariable String courseId){
+        return ResponseEntity.ok(courseService.getCourse(courseId));
+    }
+
     @PostMapping
     public ResponseEntity<CourseResponse> createCourse(@RequestHeader("X-User-ID") String userId,@RequestBody CourseRequest request){
         return ResponseEntity.ok(courseService.createCourse(userId,request));
