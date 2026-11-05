@@ -1,6 +1,6 @@
 spring:
   application:
-    name: courseservice
+    name: course-service
   datasource:
     url: jdbc:postgresql://localhost:5432/udemy_course_db
     username: postgres
