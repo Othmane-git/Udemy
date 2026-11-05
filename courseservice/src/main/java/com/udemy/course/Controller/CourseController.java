@@ -24,8 +24,8 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}")
-    public ResponseEntity<CourseResponse> getCourse(@PathVariable String courseId){
-        return ResponseEntity.ok(courseService.getCourse(courseId));
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable String courseId){
+        return ResponseEntity.ok(courseService.getCourseById(courseId));
     }
 
     @PostMapping

@@ -19,11 +19,9 @@ public class CourseService {
     }
 
 
-    public CourseResponse getCourse(String courseId) {
-        Course course = courseRepository.findById(courseId)
+    public CourseResponse getCourseById(String courseId) {
+        return courseRepository.findById(courseId).map(this::mapToResponse)
                 .orElseThrow(() -> new RuntimeException("Course doesn't exist"));
-
-        return mapToResponse(course);
     }
 
     public CourseResponse createCourse(String userId,CourseRequest request){
