@@ -1,17 +1,17 @@
 package com.notification.notificationservice.Controller;
 
-import com.notification.notificationservice.DTO.NotificationRequest;
 import com.notification.notificationservice.DTO.NotificationResponse;
-import com.notification.notificationservice.Model.Notification;
 import com.notification.notificationservice.Service.NotificationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("api/notifications")
+@RequestMapping("/api/notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -20,8 +20,13 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @PostMapping
-    public ResponseEntity<NotificationResponse> createNotification(@RequestBody NotificationRequest request){
-        return ResponseEntity.ok(notificationService.createNotification(request));
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<NotificationResponse>> getUserNotifications(@PathVariable String userId){
+        return ResponseEntity.ok(notificationService.getUserNotifications(userId));
     }
+
+//    @PostMapping
+//    public ResponseEntity<NotificationResponse> createNotification(@RequestBody NotificationRequest request){
+//        return ResponseEntity.ok(notificationService.createNotification(request));
+//    }
 }
