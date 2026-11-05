@@ -1,21 +1,48 @@
 package com.udemy.course.Config;
 
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.support.converter.MessageConverter;
 
 @Configuration
 public class RabbitMQConfig {
 
+    @Value("${rabbitmq.exchange.name}")
+    private String exchange;
+
+    @Value("${rabbitmq.routing.key}")
+    private String routingKey;
+
+    @Value("${rabbitmq.queue.name}")
+    private String queue;
+
     @Bean
     public Queue courseQueue() {
-        return new Queue("course.queue",true);
+        return new Queue(queue,true);
+    }
+
+    @Bean
+    public DirectExchange udemyExchange() {
+        return new DirectExchange(exchange);
     }
 
     @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
+
+    @Bean
+    public Binding courseBinding(
+            Queue courseQueue,
+            DirectExchange directExchange) {
+
+        return BindingBuilder
+                .bind(courseQueue)
+                .to(directExchange)
+                .with(routingKey);
+    }
+
 }
