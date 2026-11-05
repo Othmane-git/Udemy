@@ -7,9 +7,11 @@ import jakarta.validation.Valid;
 import com.udemy.userservice.Model.User;
 import com.udemy.userservice.Model.UserRole;
 import com.udemy.userservice.Model.UserStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -63,5 +65,10 @@ public class UserService {
         userResponse.setUpdatedAt(savedUser.getUpdatedAt());
 
         return userResponse;
+    }
+
+    public Boolean userExists(String userId) {
+        log.info("Calling user validation api for userId: {}",userId);
+        return userRepository.existsById(userId);
     }
 }

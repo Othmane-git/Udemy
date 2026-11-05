@@ -23,6 +23,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserProfile(userId));
     }
 
+    @GetMapping("{userId}/exists")
+    public ResponseEntity<Boolean> userExists(@PathVariable String userId){
+        return ResponseEntity.ok(userService.userExists(userId));
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody SignupRequest request){
         return ResponseEntity.ok(userService.createUser(request));

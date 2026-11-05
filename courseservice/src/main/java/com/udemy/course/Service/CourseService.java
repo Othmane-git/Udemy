@@ -3,6 +3,7 @@ package com.udemy.course.Service;
 import com.udemy.course.DTO.CourseRequest;
 import com.udemy.course.DTO.CourseResponse;
 import com.udemy.course.Model.Course;
+import com.udemy.course.Model.CourseStatus;
 import com.udemy.course.Repository.CourseRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final UserValidationService userValidationService;
 
-    public CourseService(CourseRepository courseRepository) {
+    public CourseService(CourseRepository courseRepository, UserValidationService userValidationService) {
         this.courseRepository = courseRepository;
+        this.userValidationService = userValidationService;
     }
 
 
@@ -25,6 +28,13 @@ public class CourseService {
     }
 
     public CourseResponse createCourse(String userId,CourseRequest request){
+
+        boolean isValidUser = userValidationService.validateUser(userId);
+
+        if (!isValidUser){
+            throw new RuntimeException("Invalid userId");
+        }
+
         Course course = new Course();
         course.setPrice(request.getPrice());
         course.setTitle(request.getTitle());
@@ -57,5 +67,23 @@ public class CourseService {
         return courses.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+
+
+    public CourseResponse activateCourse(String courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course doesn't exist"));
+
+        if (course.getStatus() == CourseStatus.UNDER_REVIEW ) {
+            course.setStatus(CourseStatus.ACTIVE);
+        } else if(course.getStatus() == CourseStatus.ACTIVE) {
+            throw new RuntimeException("Course is already active");
+        } else {
+            throw new RuntimeException("The course is banned");
+        }
+
+
+
+        return mapToResponse(course);
     }
 }
